@@ -1,3 +1,6 @@
+var React = require('react');
+var ReactDOM = require('react-dom');
+var $ = require('jquery')
 
 var BugFilter = React.createClass({
   render: function() {
@@ -77,6 +80,7 @@ var Buglist = React.createClass({
     console.log("Rendering bug list, num items:", this.state.bugs.length);
     return(
       <div>
+      <div>
         <h1> BugTracker </h1>
         <BugFilter />
         <hr/>
@@ -84,8 +88,9 @@ var Buglist = React.createClass({
         <hr/>
         <BugAdd addBug={this.addBug}/>
       </div>
-      <div>
-      <p>&copy: Renaissance Vision</p>
+      <footer>
+      <p>&copy; Renaissance Vision</p>
+      </footer>
       </div>
     )
   },
