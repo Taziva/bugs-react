@@ -4,11 +4,37 @@ var ReactDOM = require('react-dom');
 var BugFilter = React.createClass({
   render: function() {
     return(
+      <div>
+      <h3>Filter</h3>
+      Status:
+      <select value={this.state.status} onChange={this.onChangeStatus}>
+        <option value="">All</option>
+        <option value="New">New</option>
+        <option value="Open">Open</option>
+        <option value="Closed">Closed</option>
+      </select>
+      Priority:
+      <select value={this.state.priority} onChange={this.onChangePriority}>
+        <option value="">All</option>
+        <option value="P1">P1</option>
+        <option value="P2">P2</option>
+        <option value="P3">P3</option>
+      </select>
       <button onClick={this.submit}>Test Filter</button>
+      </div>
     )
   },
+  getInitialState: function() {
+    return {status: "", priority: ""};
+  },
+  onChangeStatus: function(e) {
+    this.setState({status: e.target.value});
+  },
+  onChangePriority: function(e) {
+    this.setState({priority: e.target.value})
+  },
   submit: function(e) {
-    this.props.submitHandler({priority: "P1"})
+    this.props.submitHandler({priority: this.state.priority, status: this.state.status})
   }
 })
 
