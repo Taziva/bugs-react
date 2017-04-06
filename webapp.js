@@ -8,7 +8,12 @@ var app = express()
 var db;
 
 app.get('/api/bugs', function(req, res) {
-  db.collection("bugs").find().toArray(function(err, docs) {
+  var filter = {};
+  if (req.query.priority)
+    filter.priority = req.query.priority;
+  if (req.query.status)
+    filter.status = req.query.status;
+  db.collection("bugs").find(filter).toArray(function(err, docs) {
     if(err){console.log(err)};
     res.json(docs);
   });
