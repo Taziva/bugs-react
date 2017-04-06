@@ -77,7 +77,6 @@ var Buglist = React.createClass({
     return{ bugs:[] }
   },
   render: function() {
-    console.log("Rendering bug list, num items:", this.state.bugs.length);
     return(
       <div>
       <div>
@@ -89,7 +88,7 @@ var Buglist = React.createClass({
         <BugAdd addBug={this.addBug}/>
       </div>
       <footer>
-      <p>&copy; Renaissance Vision</p>
+      <p>&copy; Renaissance Vision Parter</p>
       </footer>
       </div>
     )
