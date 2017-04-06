@@ -3,10 +3,12 @@ var ReactDOM = require('react-dom');
 
 var BugFilter = React.createClass({
   render: function() {
-    console.log("Rendering BugFilter");
     return(
-      <div>BugFilter</div>
+      <button onClick={this.submit}>Test Filter</button>
     )
+  },
+  submit: function(e) {
+    this.props.submitHandler({priority: "P1"})
   }
 })
 
