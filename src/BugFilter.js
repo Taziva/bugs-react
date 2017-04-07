@@ -25,8 +25,19 @@ var BugFilter = React.createClass({
     )
   },
   getInitialState: function() {
-    return {status: "", priority: ""};
+    var initFilter = this.props.initFilter;
+    return {status: initFilter.status, priority: initFilter.priority};
   },
+  componentWillReceiveProps: function(newProps) {
+    if (newProps.initFilter.status === this.state.status
+        && newProps.initFilter.priority === this.state.priority) {
+      console.log("BugFilter: componentWillReceiveProps, no change");
+      return;
+    }
+    console.log("BugFilter: componentWillReceiveProps, new filter:", newProps.initFilter);
+    this.setState({status: newProps.initFilter.status, priority: newProps.initFilter.priority});
+  },
+
   onChangeStatus: function(e) {
     this.setState({status: e.target.value});
   },
@@ -34,7 +45,10 @@ var BugFilter = React.createClass({
     this.setState({priority: e.target.value})
   },
   submit: function(e) {
-    this.props.submitHandler({priority: this.state.priority, status: this.state.status})
+    var newFilter = {};
+    if (this.state.priority) newFilter.priority = this.state.priority;
+    if (this.state.status) newFilter.status = this.state.status;
+    this.props.submitHandler(newFilter);
   }
 })
 

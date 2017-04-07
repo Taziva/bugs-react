@@ -54,7 +54,7 @@ var BugList = React.createClass({
       <div>
       <div>
         <h1> BugTracker </h1>
-        <BugFilter submitHandler={this.loadData}/>
+        <BugFilter submitHandler={this.changeFilter} initFilter={this.props.location.query}/>
         <hr/>
         <BugTable bugs={this.state.bugs}/>
         <hr/>
@@ -68,14 +68,36 @@ var BugList = React.createClass({
   },
 
   componentDidMount: function() {
-    this.loadData({});
+    console.log("BugList: componentDidMount");
+    this.loadData();
   },
 
-  loadData: function(filter){
+  componentDidUpdate: function(prevProps) {
+    var oldQuery = prevProps.location.query;
+    var newQuery = this.props.location.query;
+    if (oldQuery.priority === newQuery.priority &&
+        oldQuery.status === newQuery.status) {
+      console.log("BugList: componentDidUpdate, no change in filter, not updating");
+      return;
+    } else {
+      console.log("BugList: componentDidUpdate, loading data with new filter");
+      this.loadData();
+    }
+  },
+
+  loadData: function() {
+    var query = this.props.location.query || {};
+    var filter = {priority: query.priority, status: query.status};
+
     $.ajax('/api/bugs', {data:filter}).done(function(data) {
       this.setState({bugs: data});
     }.bind(this));
     // In production, we'd also handle errors.
+  },
+
+  changeFilter: function(newFilter) {
+    this.props.history.push({search: '?' + $.param(newFilter)});
+    this.loadData(newFilter);
   },
 
   addBug: function(bug) {
