@@ -1,11 +1,33 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var injectTapEventPlugin = require("react-tap-event-plugin");
+import RaisedButton from 'material-ui/RaisedButton';
+import Avatar from 'material-ui/Avatar';
+import FontIcon from 'material-ui/FontIcon';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+
+import {
+  blue300,
+  indigo900,
+  orange200,
+  deepOrange300,
+  pink400,
+  purple500,
+} from 'material-ui/styles/colors';
+
+injectTapEventPlugin();
 
 var BugFilter = React.createClass({
   render: function() {
     return(
-      <div>
-      <h3>Filter</h3>
+      <Card>
+      <CardHeader
+      title="Filter"
+      subtitle="Show Filtered List"
+      avatar={ <Avatar
+        icon={<FontIcon className="fa fa-filter"/>}
+      />}
+      />
       Status:
       <select value={this.state.status} onChange={this.onChangeStatus}>
         <option value="">All</option>
@@ -20,8 +42,8 @@ var BugFilter = React.createClass({
         <option value="P2">P2</option>
         <option value="P3">P3</option>
       </select>
-      <button onClick={this.submit}>Test Filter</button>
-      </div>
+      <RaisedButton label="Apply" onTouchTap={this.submit}/>
+      </Card>
     )
   },
   getInitialState: function() {

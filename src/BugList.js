@@ -64,7 +64,7 @@ var BugList = React.createClass({
         <BugAdd addBug={this.addBug}/>
       </div>
       <footer>
-      <p>&copy; Renaissance Vision Parter</p>
+      <p>&copy; Renaissance Vision</p>
       </footer>
       </div>
     )
