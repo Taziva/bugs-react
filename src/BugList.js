@@ -2,7 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var $ = require('jquery');
 var Link = require('react-router').Link;
-
+import {Table, Panel} from 'react-bootstrap';
 var BugFilter = require('./BugFilter')
 var BugAdd = require('./BugAdd')
 
@@ -13,7 +13,8 @@ var BugTable = React.createClass({
       return <BugRow key={bug._id} bug={bug} />
     });
     return(
-        <table>
+      <Panel>
+        <Table striped bordered condensed responsive hover>
           <thead>
             <tr>
               <th>Id</th>
@@ -26,7 +27,8 @@ var BugTable = React.createClass({
           <tbody>
             {bugRows}
           </tbody>
-        </table>
+        </Table>
+      </Panel>
     )
   }
 })

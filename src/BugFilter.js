@@ -1,32 +1,44 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+import { Button, Panel, Grid, Row, Col, InputGroup, InputGroupButton } from 'react-bootstrap';
 
 var BugFilter = React.createClass({
   render: function() {
     return(
-      <div>
-      <h3>Filter</h3>
-      Status:
-      <select value={this.state.status} onChange={this.onChangeStatus}>
-        <option value="">All</option>
-        <option value="New">New</option>
-        <option value="Open">Open</option>
-        <option value="Closed">Closed</option>
-      </select>
-      Priority:
-      <select value={this.state.priority} onChange={this.onChangePriority}>
-        <option value="">All</option>
-        <option value="P1">P1</option>
-        <option value="P2">P2</option>
-        <option value="P3">P3</option>
-      </select>
-      <button onClick={this.submit}>Test Filter</button>
-      </div>
+      <Panel collapsible defaultExpanded={true} header="Filter">
+        <Grid fluid={true}>
+          <Row>
+            <Col xs={12} sm={6} md={4}>
+              Status:
+              <select value={this.state.status} onChange={this.onChangeStatus}>
+                <option value="">All</option>
+                <option value="New">New</option>
+                <option value="Open">Open</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </Col>
+            <Col xs={12} sm={6} md={4}>
+              Priority:
+              <select value={this.state.priority} onChange={this.onChangePriority}>
+                <option value="">All</option>
+                <option value="P1">P1</option>
+                <option value="P2">P2</option>
+                <option value="P3">P3</option>
+              </select>
+            </Col>
+            <Col xs={12} sm={6} md={4}>
+              <InputGroup label="&nbsp;">
+                <Button bsStyle="primary" onClick={this.submit}>Filter</Button>
+              </InputGroup>
+            </Col>
+          </Row>
+        </Grid>
+      </Panel>
     )
   },
   getInitialState: function() {
     var initFilter = this.props.initFilter;
-    return {status: initFilter.status, priority: initFilter.priority};
+    return {status: initFilter.status, priority: initFilter.priority, open:true};
   },
   componentWillReceiveProps: function(newProps) {
     if (newProps.initFilter.status === this.state.status
