@@ -62,10 +62,8 @@ var BugFilter = React.createClass({
     }
     if (newFilter.status === this.state.status
         && newFilter.priority === this.state.priority) {
-      console.log("BugFilter: componentWillReceiveProps, no change");
       return;
     }
-    console.log("BugFilter: componentWillReceiveProps, new filter:", newFilter);
     this.setState({status: newFilter.status, priority: newFilter.priority});
   },
 

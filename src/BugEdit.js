@@ -2,50 +2,75 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var $ = require('jquery');
 var Link = require('react-router').Link
-
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
+import Avatar from 'material-ui/Avatar';
+import FontIcon from 'material-ui/FontIcon';
+import Snackbar from 'material-ui/Snackbar';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import SelectField from 'material-ui/SelectField';
+import TextField from 'material-ui/TextField';
+import MenuItem from 'material-ui/MenuItem';
+import { cyan900, indigo900} from 'material-ui/styles/colors';
 
 var BugEdit = React.createClass({
   render: function() {
     return (
-      <div>
-        Edit bug: {this.props.params.id}
-        <br/>
-        <form onSubmit={this.submit}>
-          Priority:
-          <select name="priority" value={this.state.priority} onChange={this.onChangePriority}>
-            <option value="P1">P1</option>
-            <option value="P2">P2</option>
-            <option value="P3">P3</option>
-          </select>
+      <Card>
+        <CardHeader
+          title="Edit Bug"
+          subtitle={this.props.params.id}
+          avatar={
+            <Avatar
+              icon={<FontIcon className="fa fa-bug"/>}
+              color={cyan900}
+            />
+          }
+        />
+        <CardText>
+          <SelectField floatingLabelText="Status" value={this.state.status} onChange={this.onChangeStatus}>
+            <MenuItem value="New" primaryText="New"/>
+            <MenuItem value="Open" primaryText="Open"/>
+            <MenuItem value="Closed" primaryText="Closed"/>
+          </SelectField>
+          <SelectField floatingLabelText="Priority" value={this.state.priority} onChange={this.onChangePriority}>
+            <MenuItem value="P1" primaryText="P1"></MenuItem>
+            <MenuItem value="P2" primaryText="P2"></MenuItem>
+            <MenuItem value="P3" primaryText="P3"></MenuItem>
+          </SelectField>
           <br/>
-          Status:
-          <select value={this.state.status} onChange={this.onChangeStatus}>
-            <option>New</option>
-            <option>Open</option>
-            <option>Fixed</option>
-            <option>Closed</option>
-          </select>
+          <TextField fullWidth={true} value={this.state.owner} onChange={this.onChangeOwner} floatingLabelText="Owner"/>
+          <TextField fullWidth={true} value={this.state.title} multiLine={true} onChange={this.onChangeTitle} floatingLabelText="Title"/>
           <br/>
-          Owner: <input type="text" value={this.state.owner} onChange={this.onChangeOwner}/>
-          <br/>
-          Title: <input type="text" value={this.state.title} onChange={this.onChangeTitle}/>
-          <br/>
-          <button type="submit">Submit</button><Link to="/bugs">Back to bug list</Link>
-        </form>
-      </div>
+          <RaisedButton label="Save" primary={true} onTouchTap={this.submit}/>
+          <FlatButton href="/#/bugs" label="Back to bug list" style={{verticalAlign: 'top'}}/>
+          <Snackbar
+          open={this.state.successSave}
+          message="Saved!"
+          autoHideDuration={4000}
+          onActionTouchTap={this.dismissSuccessNote}
+          onRequestClose={this.dismissSuccessNote}
+        />
+        </CardText>
+      </Card>
     );
   },
 
   getInitialState: function() {
-    return {};
+    return {successSave:false};
   },
 
   componentDidMount: function() {
     this.loadData();
   },
 
+  showSuccessSave: function() {
+    this.setState({successSave:true})
+  },
+  dismissSuccessNote: function(){
+    this.setState({successSave:false})
+  },
   componentDidUpdate: function(prevProps) {
-    console.log("BugEdit: componentDidUpdate", prevProps.params.id, this.props.params.id);
     if (this.props.params.id != prevProps.params.id) {
       this.loadData();
     }
@@ -57,11 +82,11 @@ var BugEdit = React.createClass({
     }.bind(this));
   },
 
-  onChangePriority: function(e) {
-    this.setState({priority: e.target.value});
+  onChangePriority: function(e,index,value) {
+    this.setState({priority: value});
   },
-  onChangeStatus: function(e) {
-    this.setState({status: e.target.value});
+  onChangeStatus: function(e,index,value) {
+    this.setState({status: value});
   },
   onChangeOwner: function(e) {
     this.setState({owner: e.target.value});
@@ -85,6 +110,7 @@ var BugEdit = React.createClass({
       dataType: 'json',
       success: function(bug) {
         this.setState(bug);
+        this.successSave;
       }.bind(this),
     });
   }

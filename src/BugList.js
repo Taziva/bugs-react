@@ -2,50 +2,59 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var $ = require('jquery');
 var Link = require('react-router').Link;
-
-import {Card, CardHeader} from 'material-ui/card'
+import Paper from 'material-ui/Paper';
+import {Card, CardHeader} from 'material-ui/card';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import AppBar from 'material-ui/AppBar';
 
 var BugFilter = require('./BugFilter')
 var BugAdd = require('./BugAdd')
 
 var BugTable = React.createClass({
   render: function() {
-    console.log("Rendering bug table, num items:", this.props.bugs.length);
     var bugRows = this.props.bugs.map(function(bug){
       return <BugRow key={bug._id} bug={bug} />
     });
     return(
-        <table>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Priority</th>
-              <th>Status</th>
-              <th>Owner</th>
-              <th>Title</th>
-            </tr>
-          </thead>
-          <tbody>
+      <Paper zDepth={1} style={{marginTop:10, marginBottom:10}}>
+        <Table>
+          <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+            <TableRow>
+              <TableHeaderColumn style={{width: 180}}>Id</TableHeaderColumn>
+              <TableHeaderColumn style={{width: 40}}>Priority</TableHeaderColumn>
+              <TableHeaderColumn style={{width: 40}}>Status</TableHeaderColumn>
+              <TableHeaderColumn style={{width: 60}}>Owner</TableHeaderColumn>
+              <TableHeaderColumn>Title</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {bugRows}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
+      </Paper>
     )
   }
 })
 
 var BugRow = React.createClass({
+  tableStyle: function(width, bug){
+    var style = {height:24}
+    if(width) style.width = width;
+    if(bug.priority === 'P1') style.color = 'red';
+    return style;
+  },
   render: function(){
-    console.log("Rendering BugRow:", this.props.bug);
+    var bug = this.props.bug;
     return(
-      <tr>
-        <td>
-          <Link to={'/bugs/' + this.props.bug._id}>{this.props.bug._id}</Link>
-        </td>
-        <td>{this.props.bug.priority}</td>
-        <td>{this.props.bug.status}</td>
-        <td>{this.props.bug.owner}</td>
-        <td>{this.props.bug.title}</td>
-      </tr>
+      <TableRow>
+        <TableRowColumn style={this.tableStyle(180, bug)}>
+          <Link to={'/bugs/' + bug._id}>{bug._id}</Link>
+        </TableRowColumn>
+        <TableRowColumn style={this.tableStyle(40, bug)}>{bug.priority}</TableRowColumn>
+        <TableRowColumn style={this.tableStyle(40, bug)}>{bug.status}</TableRowColumn>
+        <TableRowColumn style={this.tableStyle(60, bug)}>{bug.owner}</TableRowColumn>
+        <TableRowColumn style={this.tableStyle(undefined, bug)}>{bug.title}</TableRowColumn>
+      </TableRow>
     )
   }
 })
@@ -57,23 +66,15 @@ var BugList = React.createClass({
   render: function() {
     return(
       <div>
-      <div>
-        <h1> BugTracker </h1>
+        <AppBar title="BugTracker"/>
         <BugFilter submitHandler={this.changeFilter} initFilter={this.props.location.query}/>
-        <hr/>
         <BugTable bugs={this.state.bugs}/>
-        <hr/>
         <BugAdd addBug={this.addBug}/>
-      </div>
-      <footer>
-      <p>&copy; Renaissance Vision</p>
-      </footer>
       </div>
     )
   },
 
   componentDidMount: function() {
-    console.log("BugList: componentDidMount");
     this.loadData();
   },
 
@@ -82,10 +83,8 @@ var BugList = React.createClass({
     var newQuery = this.props.location.query;
     if (oldQuery.priority === newQuery.priority &&
         oldQuery.status === newQuery.status) {
-      console.log("BugList: componentDidUpdate, no change in filter, not updating");
       return;
     } else {
-      console.log("BugList: componentDidUpdate, loading data with new filter");
       this.loadData();
     }
   },

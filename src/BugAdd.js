@@ -33,7 +33,7 @@ var BugAdd = React.createClass({
           />
         <CardText expandable={true} style={{paddingTop:0}}>
           <TextField value={this.state.owner} onChange={this.onChangeOwner} floatingLabelText="Owner"/>
-          <TextField value={this.state.title} onChange={this.onChangeTitle}floatingLabelText="Titles"/>
+          <TextField value={this.state.title} onChange={this.onChangeTitle} floatingLabelText="Title"/>
           <br />
           <RaisedButton primary={true} onTouchTap={this.handleSubmit} label="Add Bug" />
         </CardText>
