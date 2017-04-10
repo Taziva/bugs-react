@@ -3,6 +3,8 @@ var ReactDOM = require('react-dom');
 var $ = require('jquery');
 var Link = require('react-router').Link;
 
+import {Card, CardHeader} from 'material-ui/card'
+
 var BugFilter = require('./BugFilter')
 var BugAdd = require('./BugAdd')
 

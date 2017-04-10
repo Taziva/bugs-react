@@ -46,7 +46,7 @@ var BugFilter = React.createClass({
         <MenuItem value="P3" primaryText="P3"></MenuItem>
       </SelectField>
       <br />
-      <RaisedButton label="Apply" onTouchTap={this.submit}/>
+      <RaisedButton label="Apply" primary={true} onTouchTap={this.submit}/>
       </CardText>
       </Card>
     )
