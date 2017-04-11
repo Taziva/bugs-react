@@ -30,7 +30,8 @@ gulp.task('watch', function() {
       })
       .pipe(source('bundle.js'))
       .pipe(gulp.dest('static/'));
-      console.log("Bundle updated, successful");
+      var date = new Date()
+      console.log("Bundle updated, successful "+ date.getHours()+":"+ date.getMinutes());
   }
 
   // we have to call bundle once to kick it off.
